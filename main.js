@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;  // Use Render’s dynamic port
 
 // Route to get the follower count of a user
 app.get("/followers/:userId", async (req, res) => {
@@ -20,12 +20,10 @@ async function isFollowing(followerId, targetId) {
     try {
         const url = `https://friends.roblox.com/v1/users/${followerId}/followings`;
         const response = await axios.get(url);
-
-        // Check if targetId exists in the list
         return response.data.data.some(user => user.id == targetId);
     } catch (error) {
         console.error("Error fetching follow data:", error.message);
-        return null; // Indicate failure
+        return null;
     }
 }
 
@@ -46,8 +44,7 @@ app.get("/isFollowing/:followerId/:targetId", async (req, res) => {
     res.json({ follows });
 });
 
-// Start the server
+// Start the server with the correct port
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
-
